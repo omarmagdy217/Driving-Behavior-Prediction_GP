@@ -1,11 +1,11 @@
 # Driving-Behavior-Prediction_GP
 
-Graduation Project
+**Graduation Project**
 
 Driving Behavior Prediction based on Brain Activity
 
-Dr. Seif Eldawlatly
-Maximum number of students: 6
+- Supervised By: Dr. Seif Eldawlatly
+
 According to the World Health Organization (WHO), 1.25 million deaths result from road
 accidents every year. Consequently, lots of technologies have been developed in order to reduce
 the accidents to save people’s lives. This project aims at developing a Brain-Computer Interface
@@ -22,7 +22,8 @@ that will be recorded during the project. These algorithms will be then tailored
 the AUTOSAR framework. Based on the detected mental state, recommendations to the driver
 will be given. In addition, signals will be sent to different car components to limit the driver’s
 capabilities in case of predicting a risky driving behavior.
-Project Modules:
+
+**Project Modules:**
 1. Driving Simulator: An open-source simulator will be used in the project to simulate driving
 environment and conditions. The simulator will be programmed to respond to inputs coming
 from a PlayStation braking pedal that corresponds to actual physical braking.
