@@ -24,14 +24,14 @@ will be given. In addition, signals will be sent to different car components to 
 capabilities in case of predicting a risky driving behavior.
 
 **Project Modules:**
-1. Driving Simulator: An open-source simulator will be used in the project to simulate driving
+**1.** Driving Simulator: An open-source simulator will be used in the project to simulate driving
 environment and conditions. The simulator will be programmed to respond to inputs coming
 from a PlayStation braking pedal that corresponds to actual physical braking.
-2. Signal Pre-processing: Recorded EEG signals will be filtered to eliminate possible noise.
+**2.** Signal Pre-processing: Recorded EEG signals will be filtered to eliminate possible noise.
 Frequency-domain representation of the filtered signals will then be obtained.
-3. Machine Learning Algorithms: These algorithms will decode the recorded brain EEG signals
+**3.** Machine Learning Algorithms: These algorithms will decode the recorded brain EEG signals
 in order to identify the underlying emotion.
-4. AUTOSAR Implementation: USB to Control Area Network (CAN) driver module will
+**4.** AUTOSAR Implementation: USB to Control Area Network (CAN) driver module will
 interface between brain signal acquisition kit and automotive evaluation board in order to take
 actions with different Electronic Control Units (ECUs). A partial CAN stack will be
 implemented to interface between Software components and CAN bus.
