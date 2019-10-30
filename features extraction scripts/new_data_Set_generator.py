@@ -51,29 +51,29 @@ for dirname, _, filenames in os.walk('EEG DATA CSV after filtering'):
             for part_data in range(0, 3):
 
                 for i in range(0, 13):
-                    if (part == 1):
+                    if (part == 0):
                         ED_O2 = data[(segment_of_segment + segment): (segment_of_segment * 2 + segment), i]
-                        if (part_data == 1):
+                        if (part_data == 0):
                             ED_O2 = ED_O2[0:each_part]
-                        elif (part_data == 2):
+                        elif (part_data == 1):
                             ED_O2 = ED_O2[each_part:each_part*2]
                         elif (part_data == 2):
                             ED_O2 = ED_O2[each_part*2:each_part*3]
 
-                    elif (part == 2):
+                    elif (part == 1):
                         ED_O2 = data[(2 * segment + segment_of_segment): (2 * segment + segment_of_segment * 2), i]
-                        if (part_data == 1):
+                        if (part_data == 0):
                             ED_O2 = ED_O2[0:each_part]
-                        elif (part_data == 2):
+                        elif (part_data == 1):
                             ED_O2 = ED_O2[each_part:each_part*2]
                         elif (part_data == 2):
                             ED_O2 = ED_O2[each_part*2:each_part*3]
 
                     elif(part==2):
                         ED_O2 = data[ ( 2*segment+segment_of_segment ): ( 2*segment + segment_of_segment * 2 ), i]
-                        if (part_data == 1):
+                        if (part_data ==0 ):
                             ED_O2 = ED_O2[0:each_part]
-                        elif (part_data == 2):
+                        elif (part_data == 1):
                             ED_O2 = ED_O2[each_part:each_part*2]
                         elif (part_data == 2):
                             ED_O2 = ED_O2[each_part*2:each_part*3]
