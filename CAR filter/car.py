@@ -4,7 +4,7 @@ import numpy as np
 import csv
 for x in range(1,35):
 	#loading the data mat file
-	file = scipy.io.loadmat('eeg_record'+str(x)+'.mat')# change filename accordingly
+	file = scipy.io.loadmat('EEG\eeg_record'+str(x)+'.mat')# change filename accordingly
 	data = pd.DataFrame.from_dict(file["o"]["data"][0,0])
 	
 	data = data.to_numpy()      # transform to numpy array
