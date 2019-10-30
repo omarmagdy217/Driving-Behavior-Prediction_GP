@@ -5,6 +5,7 @@ import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 from scipy.io import loadmat
 import numpy as np
 import SomeFns
+import csv
 
 num_of_records=0
 sf = 128
@@ -25,10 +26,17 @@ alpha_3=0
 beta_3  =0
 gamma_3 =0
 
+data_base=[]
+
 f= open("output.txt","w+")
 
+data_sample=["delta","theta","alpha","beta","gamma","state"]
+with open('dataset.csv', 'w') as csvFile:
+    weiter = csv.writer(csvFile)
+    weiter.writerow(data_sample)
+csvFile.close()
 
-for dirname, _, filenames in os.walk('EEG DATA CSV'):
+for dirname, _, filenames in os.walk('EEG DATA CSV after filtering'):
     for filename in filenames:
         print(os.path.join(dirname, filename))
         f.write(os.path.join(dirname, filename))
@@ -36,24 +44,44 @@ for dirname, _, filenames in os.walk('EEG DATA CSV'):
         loadData = pd.read_csv(os.path.join(dirname, filename))
         data = np.array(loadData)
 
-        for i in range(3,17):
+        delta_1 = 0
+        theta_1 = 0
+        alpha_1 = 0
+        beta_1 = 0
+        gamma_1 = 0
+        delta_2 = 0
+        theta_2 = 0
+        alpha_2 = 0
+        beta_2 = 0
+        gamma_2 = 0
+        delta_3 = 0
+        theta_3 = 0
+        alpha_3 = 0
+        beta_3 = 0
+        gamma_3 = 0
+
+        for i in range(0,13):
 
             ED_O2 = data[:, i]
             segment=int(len(ED_O2)/3)
             segment_of_segment=int(segment/3)
-            part=0
-            f.write('\nSignal from channel number(' + str(i-2) + ')\n')
+            part = 0
+            state = 0
+            f.write('\nSignal from channel number(' + str(i+1) + ')\n')
             for part in range(0, 3):
                 if(part==0):
                     f.write('focused part:::::::::\n')
                     ED_O2 = data[ (segment_of_segment) : (segment_of_segment*2) , i]
+                    state = 1
 
                 elif(part==1):
                     f.write('de - focused part:::::::::\n')
+                    state=2
                     ED_O2 = data[ ( segment_of_segment + segment ) : ( segment_of_segment * 2+segment ), i]
 
                 elif(part==2):
                     f.write('Third Part:::::::::\n')
+                    state=3
                     ED_O2 = data[ ( 2*segment+segment_of_segment ): ( 2*segment + segment_of_segment * 2 ), i]
 
 
@@ -75,6 +103,7 @@ for dirname, _, filenames in os.walk('EEG DATA CSV'):
                 # Compute average absolute power of Gamma band
                 gamma_power = SomeFns.bandpower(ED_O2, sf, [30, 100], win_sec)
 
+                
                 if (part == 0):
                     delta_1 = delta_1 + delta_power
                     theta_1 = theta_1 + theta_power
@@ -94,6 +123,8 @@ for dirname, _, filenames in os.walk('EEG DATA CSV'):
                     beta_3 = beta_3 + beta_power
                     gamma_3 = gamma_3 + gamma_power
 
+
+
                 f.write('Absolute delta power: %.3f uV^2\n' % delta_power)
                 f.write('Absolute theta power: %.3f uV^2\n' % theta_power)
                 f.write('Absolute alpha power: %.3f uV^2\n' % alpha_power)
@@ -101,6 +132,27 @@ for dirname, _, filenames in os.walk('EEG DATA CSV'):
                 f.write('Absolute gamma power: %.3f uV^2\n' % gamma_power)
 
             f.write('===========================================\n' )
+
+        data_sample = [delta_1, theta_1, alpha_1, beta_1, gamma_1, 1]
+
+        with open('dataset.csv', 'a') as csvFile:
+            weiter = csv.writer(csvFile)
+            weiter.writerow(data_sample)
+        csvFile.close()
+
+        data_sample = [delta_2, theta_2, alpha_2, beta_2, gamma_2, 2]
+
+        with open('dataset.csv', 'a') as csvFile:
+            weiter = csv.writer(csvFile)
+            weiter.writerow(data_sample)
+        csvFile.close()
+
+        data_sample = [delta_3, theta_3, alpha_3, beta_3, gamma_3, 3]
+
+        with open('dataset.csv', 'a') as csvFile:
+            weiter = csv.writer(csvFile)
+            weiter.writerow(data_sample)
+        csvFile.close()
 
         f.write('#################################################\n')
         f.write('#################################################\n')
