@@ -9,6 +9,11 @@ class Data_Generator:
     source_of_data= ""
     num_of_records = 35
     num_of_channels= 14
+    """
+        selective_channels option will control what is the channels you want to include in your dataset
+    """
+    selective_channels = [1,2, 3,4,5, 6, 7, 8, 9,10,11,12,13, 14]
+    #selective_channels=[2,3,6,7,8,9,14]
     sf=128
     state=1
     def __init__(self,name="",log_file_name="logs"):
@@ -22,7 +27,18 @@ class Data_Generator:
             make sure theirs no file has the same name that you input it
         """
         self.name_of_the_file=name+'.csv'
-        first_row = ["delta", "theta", "alpha", "beta", "gamma", "state"]
+        """
+            for old approach:
+            first_row = ["delta", "theta", "alpha", "beta", "gamma", "state"]    
+        """
+
+        first_row = ["delta ch(2)", "theta ch(2)", "alpha ch(2)", "beta ch(2)", "gamma ch(2)",
+                     "delta ch(3)", "theta ch(3)", "alpha ch(3)", "beta ch(3)", "gamma ch(3)",
+                     "delta ch(6)", "theta ch(6)", "alpha ch(6)", "beta ch(6)", "gamma ch(6)",
+                     "delta ch(7)", "theta ch(7)", "alpha ch(7)", "beta ch(7)", "gamma ch(7)",
+                     "delta ch(8)", "theta ch(8)", "alpha ch(8)", "beta ch(8)", "gamma ch(8)",
+                     "delta ch(9)", "theta ch(9)", "alpha ch(9)", "beta ch(9)", "gamma ch(9)",
+                     "delta ch(14)", "theta ch(14)", "alpha ch(14)", "beta ch(14)", "gamma ch(14)", "state"]
         with open(name+'.csv', 'w+') as csvFile:
             w = csv.writer(csvFile)
             w.writerow(first_row)
@@ -50,7 +66,7 @@ class Data_Generator:
             w.writerow(datasample)
         csvFile.close()
 
-    def Generate_Data(self,s=1,name="data"):
+    def Generate_Data(self,s=1,name="eeg_record"):
         """
             This Function is mainly the part responsible for generate the DataSet by
             extracting features from the dataset
@@ -163,33 +179,48 @@ class Data_Generator:
             avg power from all of them
         """
         data_sample=[0,0,0,0,0,state]
-        for channel in range(0, self.num_of_channels):
-            data_part=data[region[0]:region[1],channel]
+        """
+            Use this line if you want to take all channels
+            #for channel in range(0, self.num_of_channels):
+        """
+        new_data_sample=[]
+        for channel in self.selective_channels:
+            data_part=data[region[0]:region[1],channel+3]
             # Define the duration of the window to be 4 seconds
             win_sec = 4
             # Compute average absolute power of Delta band
             delta_power = SomeFns.bandpower(data_part, self.sf, [0.5, 4], win_sec)
             data_sample[0]+=delta_power
+            new_data_sample.append(delta_power)
             # Compute average absolute power of Theta band
             theta_power = SomeFns.bandpower(data_part, self.sf, [4, 8], win_sec)
             data_sample[1] +=theta_power
+            new_data_sample.append(theta_power)
             # Compute average absolute power of Alpha band
             alpha_power = SomeFns.bandpower(data_part, self.sf, [8, 12], win_sec)
             data_sample[2] +=alpha_power
+            new_data_sample.append(alpha_power)
             # Compute average absolute power of Beta band
             beta_power = SomeFns.bandpower(data_part, self.sf, [12, 30], win_sec)
             data_sample[3] +=beta_power
+            new_data_sample.append(beta_power)
             # Compute average absolute power of Gamma band
             gamma_power = SomeFns.bandpower(data_part, self.sf, [30, 100], win_sec)
             data_sample[4] +=gamma_power
+            new_data_sample.append(gamma_power)
         for feature in range(0, 5):
             data_sample[feature]=data_sample[feature]/self.num_of_channels
-        return data_sample
+        """
+            if you want the old approach of 5 numbers per each datasample use this line
+            #return data_sample
+        """
+        new_data_sample.append(state)
+        return new_data_sample
 
 def main():
     #create file to put the data in it
     Data_Gen = Data_Generator("data_set_file")
-    Data_Gen.Read_Data_from_Folder("EEG DATA CSV after filtering")
+    Data_Gen.Read_Data_from_Folder("EEG DATA CSV")
     """
         The number that next function takes determines tha number of datasambles taken from the same record 
     """
