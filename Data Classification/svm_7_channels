@@ -1,0 +1,56 @@
+import csv
+import statistics
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.svm import SVC
+
+# file to read data from
+Data = pd.read_csv("data_set_file_with_filtering_with_selecting_7_channels_only.csv")
+
+# Remove outliers
+for col_name in['delta ch(2)', 'theta ch(2)', 'alpha ch(2)', 'beta ch(2)', 'gamma ch(2)', 'delta ch(3)', 'theta ch(3)',
+                'delta ch(6)', 'delta ch(7)', 'delta ch(8)', 'delta ch(9)', 'delta ch(14)']:
+
+    lower_bound = 0.0
+    upper_bound = 0.95
+    # res contains min and max number in every column
+    res = Data[col_name].quantile([lower_bound, upper_bound])
+
+    # min < number < max that is true index i.e. not to be deleted
+    true_index = (res.loc[lower_bound] < Data[col_name].values) & (res.loc[upper_bound] > Data[col_name].values)
+
+    # row's index to be deleted
+    index_delete = []
+    for index in range(len(true_index)):
+        if true_index[index] == False:
+            index_delete.append(index)
+
+    # delete rows with index in index_delete
+    Data = Data.drop(index_delete, axis=0)
+    Data.reset_index(inplace=True, drop=True)
+
+    # Histogram after removing outliers
+    plt.hist(Data[col_name])
+    plt.title(col_name)
+    plt.show()
+
+# X represents features, Y represents output
+X = Data.drop('state', axis=1)
+Y = Data['state']
+
+# to make cross validation, 20% of data are test examples
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.20, shuffle=True)
+
+# train the model
+svclassifier = SVC(kernel='linear')
+svclassifier.fit(X_train, y_train)
+
+# to predict for new inputs
+y_pred = svclassifier.predict(X_test)
+
+# print accuracy
+print(confusion_matrix(y_test, y_pred))
+print(classification_report(y_test, y_pred))
