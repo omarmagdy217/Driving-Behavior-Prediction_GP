@@ -1,6 +1,6 @@
 ### Multithreading Execution Model 
 
-![Multithreading Model Diagram]()
+<img alt="Multithreading Model Diagram" src="./Multithreading Diagram.svg">
 
 #### Thread 1 (EEG Recording):
 
