@@ -12,8 +12,8 @@ class Data_Generator:
     """
         selective_channels option will control what is the channels you want to include in your dataset
     """
-    selective_channels = [1,2, 3,4,5, 6, 7, 8, 9,10,11,12,13, 14]
-    #selective_channels=[2,3,6,7,8,9,14]
+    #selective_channels = [1,2, 3,4,5, 6, 7, 8, 9,10,11,12,13, 14]
+    selective_channels=[2,3,6,7,8,9,14]
     sf=128
     state=1
     def __init__(self,name="",log_file_name="logs"):
@@ -185,6 +185,10 @@ class Data_Generator:
         """
         new_data_sample=[]
         for channel in self.selective_channels:
+            """
+                if data is filtered:
+                data_part=data[region[0]:region[1],channel-1]
+            """
             data_part=data[region[0]:region[1],channel+3]
             # Define the duration of the window to be 4 seconds
             win_sec = 4
@@ -220,6 +224,7 @@ class Data_Generator:
 def main():
     #create file to put the data in it
     Data_Gen = Data_Generator("data_set_file")
+    #Data_Gen.Read_Data_from_Folder("Data with filteration")
     Data_Gen.Read_Data_from_Folder("EEG DATA CSV")
     """
         The number that next function takes determines tha number of datasambles taken from the same record 
