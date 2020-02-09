@@ -9,8 +9,10 @@ from IPython import get_ipython
 get_ipython().run_line_magic('matplotlib', 'inline')
 ###########################################
 
+import matplotlib
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
+from matplotlib.lines import Line2D
+from mpl_toolkits.mplot3d import Axes3D
 import pandas as pd
 import numpy as np
 
@@ -41,7 +43,7 @@ def distribution(data, value, transformed = False):
 
     fig.tight_layout()
 
-def biplot(good_data, reduced_data, pca):
+def biplot(good_data, reduced_data, labels, pca):
     '''
     Produce a biplot that shows a scatterplot of the reduced
     data and the projections of the original features.
@@ -58,12 +60,13 @@ def biplot(good_data, reduced_data, pca):
     '''
 
     fig, ax = plt.subplots(figsize = (14,8))
+    colors = ['red','yellow','blue']
     # scatterplot of the reduced data    
-    ax.scatter(x=reduced_data.loc[:, 'Dimension 1'], y=reduced_data.loc[:, 'Dimension 2'], 
-        facecolors='b', edgecolors='b', s=70, alpha=0.5)
+    ax.scatter(x=reduced_data.loc[:, 'Dimension 1'], y=reduced_data.loc[:, 'Dimension 2'],
+	c=labels.loc[:], edgecolors='none', s=70, alpha=1, cmap=matplotlib.colors.ListedColormap(colors))
     
     feature_vectors = pca.components_.T
-
+    
     # we use scaling factors to make the arrows easier to see
     arrow_size, text_pos = 7.0, 8.0,
 
@@ -73,8 +76,38 @@ def biplot(good_data, reduced_data, pca):
                   head_width=0.2, head_length=0.2, linewidth=2, color='red')
         ax.text(v[0]*text_pos, v[1]*text_pos, good_data.columns[i], color='black', 
                  ha='center', va='center', fontsize=18)
-
+    
+    legend_elements = [Line2D([0], [0], marker='o', color='w', label='Focused',
+                          markerfacecolor='r', markersize=8),
+		       Line2D([0], [0], marker='o', color='w', label='De-Focused',
+                          markerfacecolor='y', markersize=8),
+		       Line2D([0], [0], marker='o', color='w', label='Drowsy',
+                          markerfacecolor='b', markersize=8)]
+    ax.legend(handles=legend_elements, loc='upper left')
     ax.set_xlabel("Dimension 1", fontsize=14)
     ax.set_ylabel("Dimension 2", fontsize=14)
     ax.set_title("PC plane with original feature projections.", fontsize=16);
+    return ax
+
+def triplot(good_data, reduced_data, labels, pca):
+
+    #fig, ax = plt.subplots(figsize = (14,8))
+    fig = plt.figure(figsize = (14,8))
+    ax = fig.add_subplot(111, projection='3d')
+    colors = ['red','yellow','blue']
+    # scatterplot of the reduced data    
+    ax.scatter(xs=reduced_data.loc[:, 'Dimension 1'], ys=reduced_data.loc[:, 'Dimension 2'], zs=reduced_data.loc[:, 'Dimension 3'], 		c=labels.loc[:], edgecolors='none', s=70, alpha=1, cmap=matplotlib.colors.ListedColormap(colors))
+    
+    feature_vectors = pca.components_.T
+    
+    legend_elements = [Line2D([0], [0], marker='o', color='w', label='Focused',
+                          markerfacecolor='r', markersize=8),
+		       Line2D([0], [0], marker='o', color='w', label='De-Focused',
+                          markerfacecolor='y', markersize=8),
+		       Line2D([0], [0], marker='o', color='w', label='Drowsy',
+                          markerfacecolor='b', markersize=8)]
+    ax.legend(handles=legend_elements, loc='upper left')
+    ax.set_xlabel("Dimension 1", fontsize=14)
+    ax.set_ylabel("Dimension 2", fontsize=14)
+    ax.set_title("PC three dimensional view.", fontsize=16);
     return ax
