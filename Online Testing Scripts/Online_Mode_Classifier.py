@@ -6,6 +6,9 @@ import pandas as pd
 import numpy as np
 import SomeFns
 import threading
+import os
+from sklearn.preprocessing import MinMaxScaler
+
 
 num_of_records=1;
 filename = 'finalized_model.sav'
@@ -13,7 +16,6 @@ states_class = ['Focused', 'De-Focused', 'Drowsy']
 model = pickle.load(open(filename, 'rb'))
 pca_reload = pickle.load(open("pca.pkl", 'rb'))
 print("Machine learning model loaded")
-log_file=open("Results_out" + ".txt", "w+")
 print("Result Can be viewed in Results_out")
 
 def predict_mine(data_sample_list):
@@ -24,20 +26,37 @@ def predict_mine(data_sample_list):
     data_sample = np.array(data_sample_list)
     data_sample = np.reshape(data_sample, (1, data_sample.size))
     data_sample.reshape(71,1)
-    print(data_sample.shape)
-    data_sample_pca=pca_reload.transform(data_sample)
+    print("The array of data before making it data frame\n")
+    print(data_sample[0])
+    data_fram=pd.DataFrame(data_sample)
+    data_fram.to_csv(r'h_tooere.csv',float_format='%.6f')
+    data_fram = data_fram.apply(lambda x: np.log(x + 1))
+    scaler = MinMaxScaler()
+    data_fram = pd.DataFrame(scaler.fit_transform(data_fram))
+    data_fram.to_csv(r'here.csv',float_format='%.6f')
+    data_sample_pca=pca_reload.transform(data_fram)
     print(data_sample_pca.shape)
     y_pred = model.predict(data_sample_pca)
     # Label states class.
     states_class = ['Focused', 'De-Focused', 'Drowsy']
     # Show predictions
     for i, state in enumerate(y_pred):
+        log_file = open("Results_out" + ".txt", "a+")
         print("Predicted mental state from sec {} to {} sec : {}".format(num_of_records - 30, num_of_records ,states_class[int(state - 1)]))
         log_file.write("Predicted mental state from sec {} to {} sec : {}\n".format(num_of_records - 30, num_of_records ,states_class[int(state - 1)]))
+        log_file.close()
+
 def Online_test():
     data_sample=Generate_Data()
     print(data_sample)
     predict_mine(data_sample)
+
+
+def runSimulator():
+    # Run the "Blocks" environment located at ./Blocks/Blocks.exe
+    #os.system('"' + os.getcwd() + "/SoundTrackApplication/WindowsNoEditor/MyProject.exe" + '"')
+    os.system('"' + os.getcwd() + "/WindowsNoEditor/MRT.exe" + '"')
+
 
 def Generate_Data(name="DataRecorded"):
     data = np.array([[]])
@@ -135,7 +154,9 @@ def Start_the_head_set_recording():
 
 def main():
     input("Press Enter to Start Recording...")
-
+    # Create a new thread for running the simulator
+    simulatorThread = threading.Thread(target=runSimulator)
+    simulatorThread.start()
     # Run the headset from the main thread
     process=Start_the_head_set_recording()
     file_counter = 1
@@ -166,7 +187,6 @@ def main():
             new_Thread = threading.Thread(target=Online_test)
             # Start the simulator thread
             new_Thread.start()
-    log_file.close()
 
 if __name__ == "__main__":
     main()
