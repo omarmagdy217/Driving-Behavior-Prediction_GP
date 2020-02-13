@@ -15,6 +15,7 @@ filename = 'finalized_model.sav'
 states_class = ['Focused', 'De-Focused', 'Drowsy']
 model = pickle.load(open(filename, 'rb'))
 pca_reload = pickle.load(open("pca.pkl", 'rb'))
+scaler_reload = pickle.load(open('scaler.sav', 'rb'))
 print("Machine learning model loaded")
 print("Result Can be viewed in Results_out")
 
@@ -30,11 +31,10 @@ def predict_mine(data_sample_list):
     print(data_sample[0])
     data_fram=pd.DataFrame(data_sample)
     data_fram.to_csv(r'h_tooere.csv',float_format='%.6f')
-    data_fram = data_fram.apply(lambda x: np.log(x + 1))
-    scaler = MinMaxScaler()
-    data_fram = pd.DataFrame(scaler.fit_transform(data_fram))
-    data_fram.to_csv(r'here.csv',float_format='%.6f')
-    data_sample_pca=pca_reload.transform(data_fram)
+    data_fram_log = data_fram.apply(lambda x: np.log(x + 1))
+    data_fram_log_minmax = pd.DataFrame(scaler_reload.transform(data_fram_log))
+    data_fram_log_minmax.to_csv(r'here.csv',float_format='%.6f')
+    data_sample_pca=pca_reload.transform(data_fram_log_minmax)
     print(data_sample_pca.shape)
     y_pred = model.predict(data_sample_pca)
     # Label states class.

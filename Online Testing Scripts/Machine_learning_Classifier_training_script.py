@@ -55,17 +55,6 @@ def fit_model(X, y):
     return grid.best_estimator_
 
 
-def pca_projection(good_data, n_components):
-    # Apply PCA by fitting the good data with only two dimensions
-    pca = PCA(n_components=n_components).fit(good_data)
-    # Transform the good data using the PCA fit above
-    reduced_data = pca.transform(good_data)
-    # Create a DataFrame for the reduced data
-    columns = ['Dimension 1', 'Dimension 2', 'Dimension 3']
-    return pd.DataFrame(reduced_data, columns=columns[:n_components]), pca
-
-
-
 
 def main():
     # Read the data.
@@ -100,29 +89,13 @@ def main():
     # Show an example of a record with scaling applied
     display(features_log_minmax_transform_out.head())
 
-    # Assign preprocessed data frame to 'good_data'.
-    good_data = features_log_minmax_transform_out
     # Assign the features to the variable Bands, and the labels to the variable state.
-    Bands = np.array(good_data)
+    Bands = np.array(features_log_minmax_transform_out)
     state = np.array(target_raw_out)
     # Shuffle and split the data into training and testing subsets.
     X_train, X_test, y_train, y_test = train_test_split(Bands, state, test_size=0.2, random_state=42, shuffle=True)
     # Success
     print("Training and testing split was successful.")
-
-    # Project data on two dimensions
-    reduced_data, pca = pca_projection(good_data, 2)
-
-    # Fitting the PCA algorithm with our training data.
-    pca = PCA().fit(X_train)
-
-    # Plotting the Cumulative Summation of the Explained Variance.
-    plt.figure(figsize=(14, 7))
-    plt.plot(np.cumsum(pca.explained_variance_ratio_))
-    plt.xlabel('Number of Components')
-    plt.ylabel('Variance (%)')  # For each component.
-    plt.title('Pulsar Dataset Explained Variance')
-    #plt.show()
 
     # From the Explained Variance graph.
     n_components = 20
@@ -162,7 +135,8 @@ def main():
     pickle.dump(model, open(filename, 'wb'))
     #save PCA
     pickle.dump(pca, open("pca.pkl", "wb"))
-
+    #save scaler
+    pickle.dump(scaler, open('scaler.sav', 'wb'))
 
 
     # some time later...
