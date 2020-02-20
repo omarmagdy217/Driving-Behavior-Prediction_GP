@@ -24,17 +24,11 @@ def predict_mine(data_sample_list):
     global states_class
     global num_of_records
     # Make predictions. Store them in the variable y_pred.
-    data_sample = np.array(data_sample_list)
-    data_sample = np.reshape(data_sample, (1, data_sample.size))
-    data_sample.reshape(71,1)
-    print("The array of data before making it data frame\n")
-    print(data_sample[0])
-    data_fram=pd.DataFrame(data_sample)
-    data_fram.to_csv(r'h_tooere.csv',float_format='%.6f')
-    data_fram_log = data_fram.apply(lambda x: np.log(x + 1))
-    data_fram_log_minmax = pd.DataFrame(scaler_reload.transform(data_fram_log))
-    data_fram_log_minmax.to_csv(r'here.csv',float_format='%.6f')
-    data_sample_pca=pca_reload.transform(data_fram_log_minmax)
+    print("The array of data before machine learning processing\n")
+    print(data_sample_list, flush=True)
+    data_log_transformed = list(map(lambda x: np.log(x + 1), data_sample_list))
+    data_log_minmax = scaler_reload.transform([data_log_transformed])
+    data_sample_pca = pca_reload.transform(data_log_minmax)
     print(data_sample_pca.shape)
     y_pred = model.predict(data_sample_pca)
     # Label states class.
@@ -48,13 +42,11 @@ def predict_mine(data_sample_list):
 
 def Online_test():
     data_sample=Generate_Data()
-    print(data_sample)
-    predict_mine(data_sample)
+    predict_mine(data_sample[:-1])
 
 
 def runSimulator():
     # Run the "Blocks" environment located at ./Blocks/Blocks.exe
-    #os.system('"' + os.getcwd() + "/SoundTrackApplication/WindowsNoEditor/MyProject.exe" + '"')
     os.system('"' + os.getcwd() + "/WindowsNoEditor/MRT.exe" + '"')
 
 
@@ -66,7 +58,6 @@ def Generate_Data(name="DataRecorded"):
             This loop just get data from 30 second 
         """
         name_of_file_to_read = "Data_recorded" + '\\' + name + str(num_of_records) + '.csv'
-        #print(name_of_file_to_read)
         num_of_records = num_of_records + 1
         loadData = pd.read_csv(name_of_file_to_read)
         temp_data = np.array(loadData)
@@ -74,9 +65,6 @@ def Generate_Data(name="DataRecorded"):
             data = temp_data
         else:
             data = np.concatenate((data, temp_data), axis=0)
-        #self.Divide_Data_the_generate(data)
-    #print(np.size(data, 0))
-    #print(np.size(data, 1))
     first_data_sample = Get_data_Sample_from_region(data)
     return first_data_sample
 
@@ -172,7 +160,6 @@ def main():
                 line = process.stdout.readline()
                 line = line[:-2]
                 line = str(line)
-                # print(line)
                 data = line.split(",")  # split string into a list
                 data[0] = data[0][2:]
                 data[17] = data[17][:-1]

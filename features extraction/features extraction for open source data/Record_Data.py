@@ -16,15 +16,19 @@ def Open_new_file(name):
 
 def Data_Recoder():
     name_of_the_file=""
-    time.sleep(60)
+    #time.sleep(60)
     """
         The next part of code initialize the process and run the headset and make it ready to recive the data
     """
-    process = subprocess.Popen("cd HeadSet\Py3&&python.exe CyKIT.py 127.0.0.1 54123 6 outputdata+noweb",
+    process = subprocess.Popen("cd HeadSet\Py3&&c:\python3\python.exe CyKIT.py 127.0.0.1 54123 6 outputdata+noweb",
                                     shell=True,
                                     stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    
+    time.sleep(4)
+    process.kill()
     for index in range(9):
         line = process.stdout.readline()
+        print(line)
 
     file_counter = 1
     while True:

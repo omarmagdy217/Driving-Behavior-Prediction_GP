@@ -63,12 +63,12 @@ def biplot(good_data, reduced_data, labels, pca):
     colors = ['red','yellow','blue']
     # scatterplot of the reduced data    
     ax.scatter(x=reduced_data.loc[:, 'Dimension 1'], y=reduced_data.loc[:, 'Dimension 2'],
-	c=labels.loc[:], edgecolors='none', s=70, alpha=1, cmap=matplotlib.colors.ListedColormap(colors))
+	c=labels.loc[:], edgecolors='none', s=70, alpha=0.5, cmap=matplotlib.colors.ListedColormap(colors))
     
     feature_vectors = pca.components_.T
     
     # we use scaling factors to make the arrows easier to see
-    arrow_size, text_pos = 7.0, 8.0,
+    arrow_size, text_pos = 7.0, 8.0
 
     # projections of the original features
     for i, v in enumerate(feature_vectors):
@@ -89,16 +89,15 @@ def biplot(good_data, reduced_data, labels, pca):
     ax.set_title("PC plane with original feature projections.", fontsize=16);
     return ax
 
-def triplot(good_data, reduced_data, labels, pca):
+def triplot(reduced_data, labels, pca):
 
     #fig, ax = plt.subplots(figsize = (14,8))
     fig = plt.figure(figsize = (14,8))
     ax = fig.add_subplot(111, projection='3d')
     colors = ['red','yellow','blue']
     # scatterplot of the reduced data    
-    ax.scatter(xs=reduced_data.loc[:, 'Dimension 1'], ys=reduced_data.loc[:, 'Dimension 2'], zs=reduced_data.loc[:, 'Dimension 3'], 		c=labels.loc[:], edgecolors='none', s=70, alpha=1, cmap=matplotlib.colors.ListedColormap(colors))
-    
-    feature_vectors = pca.components_.T
+    ax.scatter(xs=reduced_data.loc[:, 'Dimension 1'], ys=reduced_data.loc[:, 'Dimension 2'], zs=reduced_data.loc[:, 'Dimension 3'],
+	c=labels.loc[:], edgecolors=None, s=70, alpha=1, cmap=matplotlib.colors.ListedColormap(colors))
     
     legend_elements = [Line2D([0], [0], marker='o', color='w', label='Focused',
                           markerfacecolor='r', markersize=8),
@@ -109,5 +108,6 @@ def triplot(good_data, reduced_data, labels, pca):
     ax.legend(handles=legend_elements, loc='upper left')
     ax.set_xlabel("Dimension 1", fontsize=14)
     ax.set_ylabel("Dimension 2", fontsize=14)
+    ax.set_zlabel("Dimension 3", fontsize=14)
     ax.set_title("PC three dimensional view.", fontsize=16);
     return ax
