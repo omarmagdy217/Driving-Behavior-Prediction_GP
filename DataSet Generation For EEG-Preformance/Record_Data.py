@@ -26,7 +26,7 @@ def Data_Recoder1(sec):
         line = process.stdout.readline()
 
     file_counter = 1
-    while file_counter<sec*128:
+    while file_counter<sec:
         index = 0
         name = "Data_recorded\DataRecorded" + str(file_counter)
         name_of_the_file=Open_new_file(name)

@@ -10,10 +10,9 @@ def get_score():
         first_line = file.readline()
         for last_line in file:
             pass
-    print(first_line)
-    score = int(first_line[:-3])
-    print(score)
-    return score
+    score = first_line.rstrip('\n')
+    print("\n" + score)
+    return int(score)
 
 def get_preformance():
     os.system('python.exe Calculate_preformance/main.py')
@@ -23,11 +22,11 @@ def Start_one_iteration():
     #30 is the number of sec that we will record
     Record_Data.Data_Recoder1(30)
     print("Start playing after 10 secs \n Don't forget to press R to start record please :)")
-    time.sleep(60)
+    #time.sleep(60)
     print("Please press any thing in terminal after finishing the track\n Don't forget to press R to stops please :)")
-    Record_Data.Data_Recoder2()
+    #Record_Data.Data_Recoder2()
     input()
-    Record_Data.Stop_Data_Recoder2()
+    #Record_Data.Stop_Data_Recoder2()
     get_preformance()
     final_score=get_score()
     Processing_Recorded_data.Data_Generator(final_score)
