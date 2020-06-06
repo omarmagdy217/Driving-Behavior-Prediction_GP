@@ -1,0 +1,54 @@
+#Server side :
+
+import socket
+import pickle
+import time
+
+HEADERSIZE=8
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((socket.gethostname(), 1234))    # Local Host (IPv4), Port
+s.listen(5)     # Wait queue of 5
+
+while True:     # Listen forever
+    clientsocket, address = s.accept()
+    print(f"Connection from {address} has been established!")
+    
+    d=[5,7,8,6.88,1000.5635,4363532]    #list to be sent
+    msg=pickle.dumps(d)
+    msg=bytes(f'{len(msg):<{HEADERSIZE}}',"utf-8")+msg
+    clientsocket.send(msg)
+    
+    
+    
+    
+    
+    
+    
+    
+#client side:
+
+import socket
+import pickle
+
+HEADERSIZE=8
+host=socket.gethostname()           # we need to know this  #to get coputer ip address
+port=1234                           #whatever you want
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+s.connect((host,port))
+while True:
+    #do whatever you want here
+    full_msg=b''                    #intialize to receive what will be sent
+    new_msg=True                    #for first time msg
+    while True:
+        msg=s.recv(8)               #8bytes
+        if new_msg:
+            print(f"new mesg length :{msg[:HEADERSIZE]}")
+            msglen=int(msg[:HEADERSIZE])              #get msg length
+            new_msg=False                             #it is not first msg any more now
+        full_msg+=msg                                
+        if len(full_msg)-HEADERSIZE ==msglen:
+            print("full msg received")
+            #print(full_msg[HEADERSIZE:])
+            d=pickle.loads(full_msg[HEADERSIZE:])    #data received here 
+            print(d)
