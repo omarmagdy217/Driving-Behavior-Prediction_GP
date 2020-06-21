@@ -52,7 +52,7 @@ def analyse(log_path):
             
 
             # ------------------------------- Speed limit performance part-------------------------------------
-            SpeedPerf,CrossedSpeedSign = SpeedSign(Speed_sign, CrossedSpeedSign, x, y, Speed, SpeedPerf)
+            SpeedPerf,CrossedSpeedSign = SpeedSign(Speed_sign, CrossedSpeedSign, x, y, Speed, SpeedPerf,20)
            
 
 			#------------------------------- stop sign performance part-------------------------------------

@@ -39,7 +39,7 @@ def analyse(log_path):
         for l in f.readlines():
             line = l.split()
 			# Check whether the line is empty.
-            if(len(line) == 0 or cnt==0):
+            if(len(line) == 0 or cnt<10):
                 cnt+=1
                 continue
 			# Data extraction.
@@ -53,7 +53,7 @@ def analyse(log_path):
             
 
             # ------------------------------- Speed limit performance part-------------------------------------
-            SpeedPerf,CrossedSpeedSign = SpeedSign(Speed_sign, CrossedSpeedSign, x, y, Speed, SpeedPerf)
+            SpeedPerf,CrossedSpeedSign = SpeedSign(Speed_sign, CrossedSpeedSign, x, y, Speed, SpeedPerf,20)
            
 
 			#------------------------------- stop sign performance part-------------------------------------
@@ -76,8 +76,8 @@ def analyse(log_path):
                 ContinousPerf.append([time,LastContPerf])        
             TotalDevPerf+=LastContPerf
 #=============================================result================================================
-        DevPerf = math.ceil(TotalDevPerf/(cnt-1))
-        print("performance turn: " + str(TurnPerf))
+        DevPerf = math.ceil(TotalDevPerf/(cnt-10))
+        print("performance turn: " + str(sum(TurnPerf)))
         print("performance speed: " + str(SpeedPerf))
         print("performance stop: " + str(StopPerf)) 
         print("performance deviation: " + str(DevPerf))
