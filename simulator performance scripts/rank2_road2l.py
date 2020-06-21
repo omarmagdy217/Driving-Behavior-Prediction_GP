@@ -10,27 +10,27 @@ from PedstranianPerf import *
 
 def analyse(log_path):
     # Define road stripes for first square.
-    line1_1 = [[90, 105], [-8, 4]]
-    line1_2 = [[109, 121], [-20, -12]]
+    line1_1 = [[-3, 9], [70, 82]]
+    line1_2 = [[-20, -7], [83, 95]]
     # Define road stripes for second square.
-    line2_1 = [[109, 121], [-250, -235]]
-    line2_2 = [[162, 174], [-266, -254]]
+    line2_1 = [[-245, -230], [83, 95]]
+    line2_2 = [[-261, -249], [98, 110]]
     # Define road stripes for third square.
-    line3_1 = [[350, 365], [-266, -254]]
-    line3_2 = [[365.5, 377.5], [-278, -268]]
+    line3_1 = [[-261, -249], [330, 342]]
+    line3_2 = [[-272, -262], [342, 354]]
     # Define the speed sign place
-    Speed_sign1 = [[10, 25], [-8, 4]]
-    Speed_sign2 = [[125, 135], [-266, -254]]
+    Speed_sign1 = [[-3, 9], [5, 15]]
+    Speed_sign2 = [[-261, -249], [145, 160]]
     # Define the pedstranian sign place
-    Ped_sign1 = [[109, 121], [-125, -110]]
-    Ped_sign2 = [[300, 315], [-266, -254]]
+    Ped_sign1 = [[-75, -60], [83, 95]]
+    Ped_sign2 = [[-165, -150], [83, 95]]
     # Define the stop sign place and the boundary flags for performance testing.
-    Stop_sign = [[365.5, 377.5], [-315, -300]]
+    Stop_sign = [[-315, -305], [342, 354]]
     # Define road lane boundaries to compute deviation from the road.
-    Deviation1 = [[0, 109], [-8, 4]]
-    Deviation2 = [[109, 121], [-254, -8]]
-    Deviation3 = [[121, 365], [-266, -254]]
-    Deviation4 = [[365, 377], [-400, -266]]
+    Deviation1 = [[-3, 9], [0, 82]]
+    Deviation2 = [[-248, -4], [83, 95]]
+    Deviation3 = [[-261, -249], [96, 341]]
+    Deviation4 = [[-400, -262], [342, 354]]
 
     ContinousPerf = []
     LastContPerf = 1
@@ -65,38 +65,38 @@ def analyse(log_path):
 
             cnt+=1
 			#------------------------------- turning performance part-------------------------------------
-            TurnPerfTemp,crossedTurn1 = VerticalTurnLRFromLRLane(line1_1, line1_2, crossedTurn1, x, y)
+            TurnPerfTemp,crossedTurn1 = HorizontalTurnLRFromRLLane(line1_1, line1_2, crossedTurn1, x, y)
             if(TurnPerfTemp!=0):
                 TurnPerf.append(TurnPerfTemp)
             
-            TurnPerfTemp2,crossedTurn2 = HorizontalTurnLRFromLRLane(line2_1, line2_2, crossedTurn2, x, y)
+            TurnPerfTemp2,crossedTurn2 = VerticalTurnLRFromRLLane(line2_1, line2_2, crossedTurn2, x, y)
             if(TurnPerfTemp2!=0):
                 TurnPerf.append(TurnPerfTemp2)
 
-            TurnPerfTemp3,crossedTurn3 = VerticalTurnLRFromLRLane(line3_1, line3_2, crossedTurn3, x, y)
+            TurnPerfTemp3,crossedTurn3 = HorizontalTurnLRFromRLLane(line3_1, line3_2, crossedTurn3, x, y)
             if(TurnPerfTemp3!=0):
                 TurnPerf.append(TurnPerfTemp2)
 
             # ------------------------------- Speed limit performance part-------------------------------------
-            SpeedPerf1,CrossedSpeedSign1 = SpeedSign(Speed_sign1, CrossedSpeedSign1, x, y, Speed, SpeedPerf1, 20)
-            SpeedPerf2,CrossedSpeedSign2 = SpeedSign(Speed_sign2, CrossedSpeedSign2, x, y, Speed, SpeedPerf2, 30)
+            SpeedPerf1,CrossedSpeedSign1 = SpeedSign(Speed_sign1, CrossedSpeedSign1, x, y, Speed, SpeedPerf1, 30)
+            SpeedPerf2,CrossedSpeedSign2 = SpeedSign(Speed_sign2, CrossedSpeedSign2, x, y, Speed, SpeedPerf2, 20)
             if(CrossedSpeedSign2):
                 CrossedSpeedSign1 = False
 			#------------------------------- Pedstranian sign performance part-------------------------------------
-            PedPerf1,CrossedPedSign1 = PedstranianSignLeft(Ped_sign1, CrossedPedSign1, x, y, Speed, PedPerf1)
-            PedPerf2,CrossedPedSign2 = PedstranianSignUp(Ped_sign2, CrossedPedSign2, x, y, Speed, PedPerf2)
+            PedPerf1,CrossedPedSign1 = PedstranianSignDown(Ped_sign1, CrossedPedSign1, x, y, Speed, PedPerf1)
+            PedPerf2,CrossedPedSign2 = PedstranianSignDown(Ped_sign2, CrossedPedSign2, x, y, Speed, PedPerf2)
             #------------------------------- Stop sign performance part-------------------------------------
-            StopPerf,CrossedStopSign = StopSignLeft(Stop_sign, CrossedStopSign, x, y, Speed, StopPerf)
+            StopPerf,CrossedStopSign = StopSignDown(Stop_sign, CrossedStopSign, x, y, Speed, StopPerf)
 
 			#------------------------------- continous deviation performance part-------------------------------------
             if(crossedTurn1 or crossedTurn2 or crossedTurn3):
                 ContinousPerf.append([time,LastContPerf])
                 TotalDevPerf+=LastContPerf
                 continue
-            LastContPerfTemp1 = MovVerticalLeftLane(Deviation1,x,y)
-            LastContPerfTemp2 = MovHorizontalDownLane(Deviation2,x,y)
-            LastContPerfTemp3 = MovVerticalLeftLane(Deviation3,x,y)
-            LastContPerfTemp4 = MovHorizontalDownLane(Deviation4,x,y)
+            LastContPerfTemp1 = MovHorizontalupLane(Deviation1,x,y)
+            LastContPerfTemp2 = MovVerticalRightLane(Deviation2,x,y)
+            LastContPerfTemp3 = MovHorizontalupLane(Deviation3,x,y)
+            LastContPerfTemp4 = MovVerticalRightLane(Deviation4,x,y)
             if(LastContPerfTemp1!=0):
                 LastContPerf = LastContPerfTemp1
                 ContinousPerf.append([time,LastContPerf])
