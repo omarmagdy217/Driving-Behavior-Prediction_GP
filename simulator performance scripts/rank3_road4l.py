@@ -75,7 +75,7 @@ def analyse(log_path):
 
             TurnPerfTemp3,crossedTurn3 = HorizontalTurnLRFromRLLane(line3_1, line3_2, crossedTurn3, x, y)
             if(TurnPerfTemp3!=0):
-                TurnPerf.append(TurnPerfTemp3)
+                TurnPerf.append(TurnPerfTemp2)
 
             # ------------------------------- Speed limit performance part-------------------------------------
             SpeedPerf1,CrossedSpeedSign1 = SpeedSign(Speed_sign1, CrossedSpeedSign1, x, y, Speed, SpeedPerf1, 30)

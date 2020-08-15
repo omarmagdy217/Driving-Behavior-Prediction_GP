@@ -65,17 +65,17 @@ def analyse(log_path):
 
             cnt+=1
 			#------------------------------- turning performance part-------------------------------------
-            TurnPerfTemp,crossedTurn1 = HorizontalTurnLRFromRLLane(line1_1, line1_2, crossedTurn1, x, y)
+            TurnPerfTemp,crossedTurn1 = HorizontalTurnLRFromLRLane(line1_1, line1_2, crossedTurn1, x, y)
             if(TurnPerfTemp!=0):
                 TurnPerf.append(TurnPerfTemp)
             
-            TurnPerfTemp2,crossedTurn2 = VerticalTurnLRFromRLLane(line2_1, line2_2, crossedTurn2, x, y)
+            TurnPerfTemp2,crossedTurn2 = VerticalTurnLRFromLRLane(line2_1, line2_2, crossedTurn2, x, y)
             if(TurnPerfTemp2!=0):
                 TurnPerf.append(TurnPerfTemp2)
 
-            TurnPerfTemp3,crossedTurn3 = HorizontalTurnLRFromRLLane(line3_1, line3_2, crossedTurn3, x, y)
+            TurnPerfTemp3,crossedTurn3 = HorizontalTurnLRFromLRLane(line3_1, line3_2, crossedTurn3, x, y)
             if(TurnPerfTemp3!=0):
-                TurnPerf.append(TurnPerfTemp3)
+                TurnPerf.append(TurnPerfTemp2)
 
             # ------------------------------- Speed limit performance part-------------------------------------
             SpeedPerf1,CrossedSpeedSign1 = SpeedSign(Speed_sign1, CrossedSpeedSign1, x, y, Speed, SpeedPerf1, 30)
@@ -93,10 +93,10 @@ def analyse(log_path):
                 ContinousPerf.append([time,LastContPerf])
                 TotalDevPerf+=LastContPerf
                 continue
-            LastContPerfTemp1 = MovHorizontalDownLane(Deviation1,x,y)
-            LastContPerfTemp2 = MovVerticalRightLane(Deviation2,x,y)
-            LastContPerfTemp3 = MovHorizontalupLane(Deviation3,x,y)
-            LastContPerfTemp4 = MovVerticalRightLane(Deviation4,x,y)
+            LastContPerfTemp1 = MovHorizontalupLane(Deviation1,x,y)
+            LastContPerfTemp2 = MovVerticalLeftLane(Deviation2,x,y)
+            LastContPerfTemp3 = MovHorizontalDownLane(Deviation3,x,y)
+            LastContPerfTemp4 = MovVerticalLeftLane(Deviation4,x,y)
             if(LastContPerfTemp1!=0):
                 LastContPerf = LastContPerfTemp1
                 ContinousPerf.append([time,LastContPerf])
