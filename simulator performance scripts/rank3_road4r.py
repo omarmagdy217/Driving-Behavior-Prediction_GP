@@ -34,7 +34,7 @@ def analyse(log_path):
     Ped_sign3 = [[30, 40], [-57.5, -45.5]]
     Ped_sign4 = [[-70, -58], [0, 15]]
     # Define the stop sign place and the boundary flags for performance testing.
-    Stop_sign = [[-10, 3], [86, 98]]
+    Stop_sign = [[0, 10], [86, 98]]
     # Define road lane boundaries to compute deviation from the road.
     Deviation1 = [[-4, 8], [0, 80]]
     Deviation2 = [[9, 95], [81, 93]]
