@@ -10,38 +10,38 @@ from PedstranianPerf import *
 
 def analyse(log_path):
     # Define road stripes for first square.
-    line1_1 = [[70, 80], [-7, 5]]
-    line1_2 = [[83, 95], [-20, -8]]
+    line1_1 = [[-81, -70], [-5, 7]]
+    line1_2 = [[-94, -82], [-20, -7]]
     # Define road stripes for second square.
-    line2_1 = [[83, 95], [-135, -120]]
-    line2_2 = [[97, 110], [-148.5, -136.5]]
+    line2_1 = [[-94, -82], [-135, -120]]
+    line2_2 = [[-77, -60], [-150, -138]]
     # Define road stripes for third square.
-    line3_1 = [[235, 245], [-147, -135]]
-    line3_2 = [[249, 261], [-125, -110]]
+    line3_1 = [[55, 70], [-148, -136]]
+    line3_2 = [[72, 84], [-134, -120]]
     # Define road stripes for four square.
-    line4_1 = [[249, 261], [-25, -10]]
-    line4_2 = [[230, 244], [-6, 6]]
+    line4_1 = [[71.5, 83.5], [-25, -10]]
+    line4_2 = [[50, 67], [-8, 4]]
     # Define road stripes for fifth square.
-    line5_1 = [[150, 166], [-8, 4]]
-    line5_2 = [[148, 160], [7, 20]]
+    line5_1 = [[-13, 3], [-9.5, 2.5]]
+    line5_2 = [[-29, -17], [-28, -14]]
     # Define the speed sign place
-    Speed_sign1 = [[10, 25], [-7, 5]]
-    Speed_sign2 = [[95, 110], [-147, -135]]
-    Speed_sign3 = [[237, 220], [-6, 6]]
+    Speed_sign1 = [[-30, -15], [-5, 7]]
+    Speed_sign2 = [[-82, -65], [-150, -138]]
+    Speed_sign3 = [[40, 56], [-8, 4]]
     # Define the pedstranian sign place
-    Ped_sign1 = [[83, 95], [-75, -65]]
-    Ped_sign2 = [[175, 185], [-147, -135]]
-    Ped_sign3 = [[249, 261], [-100, -85]]
-    Ped_sign4 = [[190, 205], [-6, 6]]
+    Ped_sign1 = [[-94, -82], [-80, -70]]
+    Ped_sign2 = [[5, 15], [-150, -138]]
+    Ped_sign3 = [[72, 84], [-105, -95]]
+    Ped_sign4 = [[15, 25], [-8, 4]]
     # Define the stop sign place and the boundary flags for performance testing.
-    Stop_sign = [[148, 160], [45, 55]]
+    Stop_sign = [[-29, -17], [-70, -55]]
     # Define road lane boundaries to compute deviation from the road.
-    Deviation1 = [[0, 82], [-7, 5]]
-    Deviation2 = [[83, 95], [-134, -8]]
-    Deviation3 = [[96, 248], [-147, -135]]
-    Deviation4 = [[249, 261], [-135, -7]]
-    Deviation5 = [[161 ,248], [-6, 6]]
-    Deviation6 = [[148, 160], [7, 400]]
+    Deviation1 = [[-81, 0], [-5, 7]]
+    Deviation2 = [[-94, -82], [-137, -6]]
+    Deviation3 = [[71, -81], [-150, -138]]
+    Deviation4 = [[72, 84], [-137, -7]]
+    Deviation5 = [[-16, 71], [-8, 4]]
+    Deviation6 = [[-29, -17], [-400, -9]]
 
     ContinousPerf = []
     LastContPerf = 1
@@ -100,7 +100,7 @@ def analyse(log_path):
             if(TurnPerfTemp4!=0):
                 TurnPerf.append(TurnPerfTemp4)
 
-            TurnPerfTemp5,crossedTurn5 = VerticalTurnLRFromRLLane(line5_1, line5_2, crossedTurn5, x, y)
+            TurnPerfTemp5,crossedTurn5 = VerticalTurnLRFromLRLane(line5_1, line5_2, crossedTurn5, x, y)
             if(TurnPerfTemp5!=0):
                 TurnPerf.append(TurnPerfTemp5)        
 
@@ -118,19 +118,19 @@ def analyse(log_path):
             PedPerf3,CrossedPedSign3 = PedstranianSignRight(Ped_sign3, CrossedPedSign3, x, y, Speed, PedPerf3)
             PedPerf4,CrossedPedSign4 = PedstranianSignDown(Ped_sign4, CrossedPedSign4, x, y, Speed, PedPerf4)
             #------------------------------- Stop sign performance part-------------------------------------
-            StopPerf,CrossedStopSign = StopSignRight(Stop_sign, CrossedStopSign, x, y, Speed, StopPerf)
+            StopPerf,CrossedStopSign = StopSignLeft(Stop_sign, CrossedStopSign, x, y, Speed, StopPerf)
 
 			#------------------------------- continous deviation performance part-------------------------------------
             if(crossedTurn1 or crossedTurn2 or crossedTurn3 or crossedTurn4 or crossedTurn5):
                 ContinousPerf.append([time,LastContPerf])
                 TotalDevPerf+=LastContPerf
                 continue
-            LastContPerfTemp1 = MovVerticalLeftLane(Deviation1,x,y)
+            LastContPerfTemp1 = MovVerticalRightLane(Deviation1,x,y)
             LastContPerfTemp2 = MovHorizontalDownLane(Deviation2,x,y)
             LastContPerfTemp3 = MovVerticalLeftLane(Deviation3,x,y)
             LastContPerfTemp4 = MovHorizontalupLane(Deviation4,x,y)
             LastContPerfTemp5 = MovVerticalRightLane(Deviation5,x,y)
-            LastContPerfTemp6 = MovHorizontalupLane(Deviation6,x,y)
+            LastContPerfTemp6 = MovHorizontalDownLane(Deviation6,x,y)
             if(LastContPerfTemp1!=0):
                 LastContPerf = LastContPerfTemp1
                 ContinousPerf.append([time,LastContPerf])
