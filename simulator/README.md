@@ -14,6 +14,8 @@ Pre-built releases are available for download. Each release combines all of the 
 
 - All the releases are built for x64 Windows and can be found on our [releases](https://github.com/omarmagdy217/Driving-Behavior-Prediction_GP/releases) page.
 
+---
+
 #### API Car Control
 Based on the perfromance and the mental state of the driver, necessary safety actions should be taken to limit the driver's control on the car.
 The `control_car.py` uses the APIs provided by AirSim to present three different types of controls based on the driving behaviour:
