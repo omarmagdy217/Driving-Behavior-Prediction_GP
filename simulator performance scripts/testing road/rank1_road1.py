@@ -61,8 +61,8 @@ def analyse(data):
         TotalDevPerf+=LastContPerf
 #=============================================result================================================
     DevPerf = math.ceil(TotalDevPerf/(cnt))
-    # print("performance turn: " + str(sum(TurnPerf)))
-    # print("performance speed: " + str(SpeedPerf)) 
-    # print("performance deviation: " + str(DevPerf))
+    print("performance turn: " + str(sum(TurnPerf)))
+    print("performance speed: " + str(SpeedPerf)) 
+    print("performance deviation: " + str(DevPerf))
     return (DevPerf+SpeedPerf+sum(TurnPerf))/3,ContinousPerf
 

@@ -115,7 +115,7 @@ def analyse(log_path):
         TurnPerfTotal = math.ceil(sum(TurnPerf))
         SpeedPerfTotal = math.ceil((SpeedPerf1+SpeedPerf2))
         PedPerfTotal = math.ceil((PedPerf1+PedPerf2))
-        print("performance turn: " + str(TurnPerfTotal))
+        print("performance turn: " + str(TurnPerf))
         print("performance speed1: " + str(SpeedPerf1))
         print("performance speed2: " + str(SpeedPerf2))
         print("performance ped1: " + str(PedPerf1))

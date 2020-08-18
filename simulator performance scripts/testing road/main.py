@@ -6,6 +6,8 @@ import math
 import rank2_road1 as road1
 import rank3_road1 as road2
 import rank1_road1 as road3
+import rank2_road2 as road4
+import rank2_road3 as road5
 
 log_path = path.expanduser('~\\Documents\\AirSim\\airsim_rec.txt')
 
@@ -19,10 +21,9 @@ data6 = []
 
 RankSplit1 = [[366, 378], [-380, -360]]
 RankSplit2 = [[475, 495], [-394, -382]]
-
-RankSplit3 = [[162, 174], [-441, -430]]
-RankSplit4 = [[162, 174], [-441, -430]]
-RankSplit5 = [[162, 174], [-441, -430]] 
+RankSplit3 = [[642, 654], [-870, -850]]
+RankSplit4 = [[390, 410], [-577, -565]]
+RankSplit5 = [[566.5, 578.5], [-335, -300]] 
 
 def compute():
     with open(log_path, 'r') as f:
@@ -66,9 +67,11 @@ def compute():
                 data6.append([x,y,Speed])
 
     
-    # p1 = road1.analyse(data1)
-    # p2 = road2.analyse(data2)
-    # p3 = road3.analyse(data3)
+    p1 = road1.analyse(data1)
+    p2 = road2.analyse(data2)
+    p3 = road3.analyse(data3)
+    p4 = road4.analyse(data4)
+    p5 = road5.analyse(data5)
 
     return [1,1,1,1,1,1]
 

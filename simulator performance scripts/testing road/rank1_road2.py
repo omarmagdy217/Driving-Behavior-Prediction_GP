@@ -9,15 +9,15 @@ from ContinousPerf import *
 
 def analyse(data):
     # Define road stripes for first square.
-    line1_1 = [[150, 165], [-4, 8]]
-    line1_2 = [[162, 174], [-25, -15]]
+    line1_1 = [[566.5, 578.5], [-302, -282]]
+    line1_2 = [[538, 555], [-278, -266]]
     # Define the speed sign place
-    Speed_sign = [[162, 174], [-120, -105]]
+    Speed_sign = [[360, 380], [-278, -266]]
     # Define the stop sign place and the boundary flags for performance testing.
-    Stop_sign = [[162, 174], [-441, -430]]
+    Stop_sign = [[210, 230], [-278, -266]]
     # Define road lane boundaries to compute deviation from the road.
-    Deviation1 = [[0, 165], [-4, 8]]
-    Deviation2 = [[162, 174], [-600, -9]]
+    Deviation1 = [[566.5, 578.5], [-1000, -279]]
+    Deviation2 = [[-500, 566], [-278, -266]]
 
 
     ContinousPerf = []
@@ -40,7 +40,7 @@ def analyse(data):
 
         cnt+=1
         #------------------------------- turning performance part-------------------------------------
-        TurnPerfTemp,crossedTurn1 = VerticalTurnLRFromLRLane(line1_1, line1_2, crossedTurn1, x, y)
+        TurnPerfTemp,crossedTurn1 = HorizontalTurnLRFromLRLane(line1_1, line1_2, crossedTurn1, x, y)
         if(TurnPerfTemp!=0):
             TurnPerf.append(TurnPerfTemp)
         
@@ -50,7 +50,7 @@ def analyse(data):
         
 
         #------------------------------- stop sign performance part-------------------------------------
-        StopPerf,CrossedStopSign = StopSignLeft(Stop_sign, CrossedStopSign, x, y, Speed, StopPerf)
+        StopPerf,CrossedStopSign = StopSignDown(Stop_sign, CrossedStopSign, x, y, Speed, StopPerf)
         
 
 
@@ -59,8 +59,8 @@ def analyse(data):
             ContinousPerf.append([time,LastContPerf])
             TotalDevPerf+=LastContPerf
             continue
-        LastContPerfTemp1 = MovVerticalLeftLane(Deviation1,x,y)
-        LastContPerfTemp2 = MovHorizontalDownLane(Deviation2,x,y)
+        LastContPerfTemp1 = MovHorizontalDownLane(Deviation1,x,y)
+        LastContPerfTemp2 = MovVerticalLeftLane(Deviation2,x,y)
         if(LastContPerfTemp1!=0):
             LastContPerf = LastContPerfTemp1
             ContinousPerf.append([time,LastContPerf])
@@ -70,9 +70,9 @@ def analyse(data):
         TotalDevPerf+=LastContPerf
 #=============================================result================================================
     DevPerf = math.ceil(TotalDevPerf/(cnt))
-    # print("performance turn: " + str(sum(TurnPerf)))
-    # print("performance speed: " + str(SpeedPerf))
-    # print("performance stop: " + str(StopPerf)) 
-    # print("performance deviation: " + str(DevPerf))
+    print("performance turn: " + str(sum(TurnPerf)))
+    print("performance speed: " + str(SpeedPerf))
+    print("performance stop: " + str(StopPerf)) 
+    print("performance deviation: " + str(DevPerf))
     return (DevPerf+SpeedPerf+StopPerf+sum(TurnPerf))/4,ContinousPerf
 
