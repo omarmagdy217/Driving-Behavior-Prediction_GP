@@ -8,6 +8,7 @@ import rank3_road1 as road2
 import rank1_road1 as road3
 import rank2_road2 as road4
 import rank2_road3 as road5
+import rank1_road2 as road6
 
 log_path = path.expanduser('~\\Documents\\AirSim\\airsim_rec.txt')
 
@@ -72,11 +73,12 @@ def compute():
     p3 = road3.analyse(data3)
     p4 = road4.analyse(data4)
     p5 = road5.analyse(data5)
+    p6 = road6.analyse(data6)
+    return [p1,p2,p3,p4,p5,p6]
 
-    return [1,1,1,1,1,1]
 
-
-print(compute())
+compute()
+print(len(data6))
 
         
         
