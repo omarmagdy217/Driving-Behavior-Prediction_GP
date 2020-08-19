@@ -1,0 +1,56 @@
+import time
+import random
+import serial
+import time
+import subprocess
+
+# Global Variables
+ser = 0
+
+# Function to Initialize the Serial Port
+
+
+def init_serial():
+    global ser  # Must be declared in Each Function
+    ser = serial.Serial("COM3", 9600)
+
+    # Doesn't hangs
+    ser.timeout = 10
+    if(ser.isOpen() == False):
+        ser.open()
+
+    # print port open or closed
+    if ser.isOpen():
+        print('Open: ' + ser.portstr)
+# Function Ends Here
+
+
+# Call the Serial Initialization Function, Main Program Starts from here
+init_serial()
+states = []
+counter = 0
+while True:
+    f = open("test", 'r')
+    s = f.readlines()
+    ser.write(s[0].encode())  # Writes to the SerialPort
+
+    bytes = ser.readline()
+    states.append(bytes.decode('utf-8'))
+    counter += 1
+
+    if (counter == 5):
+        state_no = max(states, key=states.count)
+        if state_no == "10":
+            state_type = "focused"
+        elif state_no == "20":
+            state_type = "unfocused"
+        else:
+            state_type = "drowsy"
+        process = subprocess.Popen(
+            ["python", "control_car.py", "-s", state_type])
+        print("Started the subprocess with state:", state_type)
+        counter = 0
+        states.clear()
+
+    f.close()
+    # time.sleep(1)
