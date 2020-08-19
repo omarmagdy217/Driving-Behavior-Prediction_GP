@@ -28,6 +28,7 @@ def predict_mine(data_sample_list):
     global My_State
     global states_class
     global num_of_records
+    # Make predictions. Store them in the variable y_pred.
     print("The array of data before machine learning processing\n")
     print(data_sample_list, flush=True)
     data_log_transformed = list(map(lambda x: np.log(x + 1), data_sample_list))
@@ -39,22 +40,20 @@ def predict_mine(data_sample_list):
     states_class = ['Focused', 'De-Focused', 'Drowsy']
     for i, state in enumerate(y_pred):
         log_file = open("Results_out" + ".txt", "a+")
-        print("Predicted mental state from sec {} to {} sec : {}".format(num_of_records - 30, num_of_records ,states_class[int(state - 1)]))
+        print("Predicted mental state from sec {} to {} sec : {}".format(num_of_records - 1, num_of_records ,states_class[int(state - 1)]))
         log_file.write("Predicted mental state from sec {} to {} sec : {}\n".format(num_of_records - 30, num_of_records ,states_class[int(state - 1)]))
         log_file.close()
         My_State = states_class[int(state - 1)]
 
 def Online_test():
-    data_sample=Generate_Data()
+    data_sample = Generate_Data()
     predict_mine(data_sample[:-1])
+
 
 def Generate_Data(name="DataRecorded"):
     data = np.array([[]])
     global num_of_records
-    for file_number in range(1, 31):
-        """
-            This loop just get data from 30 second 
-        """
+    for file_number in range(1, 2):
         name_of_file_to_read = "Final_Online_Mental_Data_recorded" + '\\' + name + str(num_of_records) + '.csv'
         num_of_records = num_of_records + 1
         loadData = pd.read_csv(name_of_file_to_read)
@@ -163,10 +162,10 @@ def StartFromHere():
             end = time.time()
         csvFile.close()
         file_counter = file_counter + 1
-        if(file_counter%31==0):
-            Thread4 = threading.Thread(target=Online_test)
-            Thread4.start()
+        Thread4 = threading.Thread(target=Online_test)
+        Thread4.start()
     process.terminate()
+
 class refresher():
     state=""
     def updatez(self):

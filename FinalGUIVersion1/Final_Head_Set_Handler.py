@@ -55,7 +55,4 @@ def Data_Recoder(sec):
 
 def Start_initial_recording():
     print("We are recording now Please wait")
-    #######################################################################
-    #########    5aly balak al 5 de 5aleha 31 ya5oya ######################
-    #######################################################################
-    Data_Recoder(5)
+    Data_Recoder(31)
