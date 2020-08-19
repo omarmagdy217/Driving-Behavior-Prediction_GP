@@ -1,0 +1,58 @@
+import serial
+import time
+    
+#Global Variables
+ser = 0
+
+#Function to Initialize the Serial Port
+def init_serial():
+    global ser          #Must be declared in Each Function
+    ser = serial.Serial("COM7",9600)
+    
+    
+    #Doesn't hangs
+    ser.timeout = 10
+    if(ser.isOpen() == False):
+        ser.open()
+          
+
+    # print port open or closed
+    if ser.isOpen():
+        print( 'Open: ' + ser.portstr)
+#Function Ends Here
+        
+
+#Call the Serial Initilization Function, Main Program Starts from here
+init_serial()
+states = []
+counter = 0
+while True:
+    f=open("untitled.txt",'r')
+    s=f.readlines()
+    ser.write(s[0].encode()) #Writes to the SerialPort
+    
+    
+    bytes = ser.readline()
+    #print('You sent: ' + bytes.decode('utf-8'))
+    states.append(bytes.decode('utf-8'))
+    counter += 1
+    if (counter == 50):
+        counter = 0
+        state = max(states,key=states.count)
+        """
+        if state == 10:
+            
+        elif state == 20:
+            
+        else:
+        """    
+            
+    f.close()
+    time.sleep(1)
+    
+    #temp = input('Type what you want to send, hit enter:\r\n')
+    
+#    bytes = ser.readline()  #Read from Serial Port
+#    print ('You sent: ' + bytes.decode('utf-8') )      #Print What is Read from Port
+    
+#Ctrl+C to Close Python Window
