@@ -30,7 +30,7 @@ def compute():
     with open(log_path, 'r') as f:
 
         cnt = 0
-
+        curDataIndex = 0
         for l in f.readlines():
 
             line = l.split()
@@ -51,8 +51,7 @@ def compute():
                 curDataIndex = 4
             elif(RankSplit5[0][0] <= x <= RankSplit5[0][1] and RankSplit5[1][0] <= y <= RankSplit5[1][1]):
                 curDataIndex = 5
-            else:
-                curDataIndex = 0
+            
 
             if(curDataIndex == 0):
                 data1.append([x,y,Speed])
