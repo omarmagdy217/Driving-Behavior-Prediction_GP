@@ -16,26 +16,26 @@ void LCD_sendCommand(uint8_t command)
 {
 	DIO_WritePort(LCD_CTRL_PORT,RS,STD_LOW); /* Instruction Mode RS=0 */
 	DIO_WritePort(LCD_CTRL_PORT,RW,STD_LOW); /* write data to LCD so RW=0 */
-	_delay_ms(10); /* delay for processing Tas = 50ns */
+	_delay_ms(1); /* delay for processing Tas = 50ns */
 	DIO_WritePort(LCD_CTRL_PORT,E,STD_HIGH); /* Enable LCD E=1 */
-	_delay_ms(10); /* delay for processing Tpw - Tdws = 190ns */
+	_delay_ms(1); /* delay for processing Tpw - Tdws = 190ns */
 	LCD_DATA_PORT = command; /* out the required command to the data bus D0 --> D7 */
-	_delay_ms(10); /* delay for processing Tdsw = 100ns */
+	_delay_ms(1); /* delay for processing Tdsw = 100ns */
 	DIO_WritePort(LCD_CTRL_PORT,E,STD_LOW);
-	_delay_ms(10);
+	_delay_ms(1);
 
 }
 void LCD_displayCharacter(uint8_t data)
 {
 	DIO_WritePort(LCD_CTRL_PORT,RS,STD_HIGH); // RS pin is on PB1
 	DIO_WritePort(LCD_CTRL_PORT,RW,STD_LOW); // R/W pin is on PB0
-	_delay_ms(10); /* delay for processing Tas = 50ns */
+	_delay_ms(1); /* delay for processing Tas = 50ns */
 		DIO_WritePort(LCD_CTRL_PORT,E,STD_HIGH); /* Enable LCD E=1 */
-	_delay_ms(10);
+	_delay_ms(1);
 		LCD_DATA_PORT = data; /* out the required data char to the data bus D0 --> D7 */
-	_delay_ms(10); /* delay for processing Tpw - Tdws = 190ns */
+	_delay_ms(1); /* delay for processing Tpw - Tdws = 190ns */
 			DIO_WritePort(LCD_CTRL_PORT,E,STD_LOW);
-	_delay_ms(10); /* delay for processing Tdsw = 100ns */
+	_delay_ms(1); /* delay for processing Tdsw = 100ns */
 	
 }
 
