@@ -35,3 +35,6 @@ in order to identify the underlying emotion.
 interface between brain signal acquisition kit and automotive evaluation board in order to take
 actions with different Electronic Control Units (ECUs). A partial CAN stack will be
 implemented to interface between Software components and CAN bus.
+
+## Demo
+Link on youtube: [Driving Behavior and Performance Prediction Based on EEG Brain Activity - Final Project Mini Demo](https://www.youtube.com/watch?v=jJmXSDqGJN0&t)
